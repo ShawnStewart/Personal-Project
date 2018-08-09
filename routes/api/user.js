@@ -1,9 +1,12 @@
 const router = require("express").Router();
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const User = require("../../models/User");
-const validateRegisterInput = require("../../validation/register");
+const keys = require("../../config/keys");
+const validateRegistration = require("../../validation/register");
+const validateLogin = require("../../validation/login");
 
 // @route   GET api/users/test
 // @desc    Tests users route
@@ -14,7 +17,7 @@ router.get("/test", (req, res) => res.json({ msg: "Users route working" }));
 // @desc    Registers new user
 // @acess   Public
 router.post("/register", (req, res) => {
-  const { errors, isValid } = validateRegisterInput(req.body);
+  const { errors, isValid } = validateRegistration(req.body);
 
   // Validation Check
   if (!isValid) {
@@ -52,6 +55,45 @@ router.post("/register", (req, res) => {
       }
     })
     .catch(err => console.log("err :("));
+});
+
+// @route   POST api/users/login
+// @desc    Login user and return JWT
+// @acess   Public
+router.post("/login", (req, res) => {
+  const { errors, isValid } = validateLogin(req.body);
+
+  // Validation Check
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.findOne({ username }).then(user => {
+    if (!user) {
+      errors.username = "Username not found";
+      res.status(404).json(errors);
+    }
+
+    // Check password
+    bcrypt.compare(password, user.password).then(isMatch => {
+      if (isMatch) {
+        // Successful login creating token
+        const payload = { id: user.id, name: user.name, avatar: user.avatar };
+        jwt.sign(payload, keys.jwtSecret, { expiresIn: 3600 }, (err, token) => {
+          res.json({
+            success: true,
+            token: "Bearer " + token
+          });
+        });
+      } else {
+        errors.password = "Incorrect password";
+        return res.status(400).json(errors);
+      }
+    });
+  });
 });
 
 module.exports = router;
