@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const users = require("./routes/api/user");
 
 const app = express();
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Connect MongoDB
