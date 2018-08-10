@@ -114,4 +114,25 @@ router.get(
   }
 );
 
+// @route   GET api/users/:username
+// @desc    Gets a user by username
+// @acess   public
+router.get("/:username", (req, res) => {
+  const errors = {};
+
+  User.findOne({ username: req.params.username })
+    .then(user => {
+      if (!user) {
+        errors.noprofile = "Sorry, that username does not exist!";
+        res.status(404).json(errors);
+      }
+
+      res.json(user);
+    })
+    .catch(() => {
+      errors.noprofile = "Sorry, that username does not exist!";
+      res.status(404).json(errors);
+    });
+});
+
 module.exports = router;
