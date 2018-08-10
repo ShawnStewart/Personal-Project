@@ -2,6 +2,7 @@ const router = require("express").Router();
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const passport = require("passport");
 
 const User = require("../../models/User");
 const keys = require("../../config/keys");
@@ -95,5 +96,22 @@ router.post("/login", (req, res) => {
     });
   });
 });
+
+// @route   GET api/users/current
+// @desc    Gets the current user
+// @acess   Private
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json({
+      username: req.user.username,
+      email: req.user.email,
+      avatar: req.user.avatar,
+      friends: req.user.friends,
+      date: req.user.date
+    });
+  }
+);
 
 module.exports = router;
