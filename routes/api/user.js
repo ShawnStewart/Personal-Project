@@ -72,34 +72,36 @@ router.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  User.findOne({ username }).then(user => {
-    if (!user) {
-      errors.username = "Username not found";
-      res.status(404).json(errors);
-    }
-
-    // Check password
-    bcrypt.compare(password, user.password).then(isMatch => {
-      if (isMatch) {
-        // Successful login creating token
-        const payload = { id: user.id, name: user.name, avatar: user.avatar };
-        jwt.sign(
-          payload,
-          keys.jwtSecret,
-          { expiresIn: "10h" },
-          (err, token) => {
-            res.json({
-              success: true,
-              token: "Bearer " + token
-            });
-          }
-        );
-      } else {
-        errors.password = "Incorrect password";
-        return res.status(400).json(errors);
+  User.findOne({ username })
+    .select("+password")
+    .then(user => {
+      if (!user) {
+        errors.username = "Username not found";
+        res.status(404).json(errors);
       }
+
+      // Check password
+      bcrypt.compare(password, user.password).then(isMatch => {
+        if (isMatch) {
+          // Successful login creating token
+          const payload = { id: user.id, name: user.name, avatar: user.avatar };
+          jwt.sign(
+            payload,
+            keys.jwtSecret,
+            { expiresIn: "10h" },
+            (err, token) => {
+              res.json({
+                success: true,
+                token: "Bearer " + token
+              });
+            }
+          );
+        } else {
+          errors.password = "Incorrect password";
+          return res.status(400).json(errors);
+        }
+      });
     });
-  });
 });
 
 // @route   GET api/users/current
@@ -109,19 +111,15 @@ router.get(
   "/current",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.json({
-      username: req.user.username,
-      email: req.user.email,
-      avatar: req.user.avatar,
-      friends: req.user.friends,
-      date: req.user.date
-    });
+    User.findById(req.user.id)
+      .populate("friends.friend", "username")
+      .then(user => res.json(user));
   }
 );
 
 // @route   GET api/users/:username
 // @desc    Gets a user by username
-// @acess   public
+// @acess   Public
 router.get("/:username", (req, res) => {
   const errors = {};
 
@@ -139,5 +137,35 @@ router.get("/:username", (req, res) => {
       res.status(404).json(errors);
     });
 });
+
+// @route   PUT api/users/:username/adduser
+// @desc    Sends / Accepts friend request
+// @acess   Private
+router.post(
+  "/:username/adduser",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    User.findOne({ username: req.params.username })
+      .then(user => {
+        if (!user) {
+          errors.noprofile = "Sorry, that username does not exist!1";
+          res.status(404).json(error);
+        }
+
+        // User found
+        // Creating new request
+        user.friends.push({ status: "pending", friend: req.user._id });
+        user.save();
+        req.user.friends.push({ status: "requested", friend: user._id });
+        req.user.save().then(response => res.json(response));
+      })
+      .catch(() => {
+        errors.noprofile = "Sorry, that username does not exist!2";
+        res.status(404).json(errors);
+      });
+  }
+);
 
 module.exports = router;
