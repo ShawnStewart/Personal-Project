@@ -10,7 +10,8 @@ const UserSchema = new Schema({
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    select: false
   },
   email: {
     type: String,
@@ -25,12 +26,15 @@ const UserSchema = new Schema({
   },
   friends: [
     {
-      friend: this,
       status: {
         type: String
       },
       date: {
         type: Date
+      },
+      friend: {
+        type: ObjectId,
+        ref: "users"
       }
     }
   ]
