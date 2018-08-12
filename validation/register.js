@@ -14,6 +14,9 @@ module.exports = function validateRegisterInput(data) {
     errors.username = "Username field is required";
   } else if (!Validator.isLength(data.username, { max: 16 })) {
     errors.username = "Username can't be more than 16 characters";
+  } else if (!/^[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*$/.test(data.username)) {
+    errors.username =
+      "Username can contain, but not begin/end with or have multiple consectutive occurances of: - _ .";
   }
 
   // email
