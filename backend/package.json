@@ -8,7 +8,7 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "my-app": "npm start --prefix ../my-app",
-    "dev": "concurrently \"npm run server\" \"npm run my-app\""
+    "app": "concurrently \"npm run server\" \"npm run my-app\""
   },
   "repository": {
     "type": "git",
