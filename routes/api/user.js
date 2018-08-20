@@ -149,20 +149,35 @@ router.post(
 
     User.findOne({ username: req.params.username })
       .then(user => {
-        if (!user) {
-          errors.noprofile = "Sorry, that username does not exist!1";
+        if (!founduser) {
+          errors.noprofile = "Sorry, that username does not exist!";
           res.status(404).json(error);
         }
 
+        // Check for existing friendship
+        req.user.friends.forEach(friendship => {
+          if (String(friendship.friend) == String(founduser._id)) {
+            // Check if friendship is not accepted
+            if (friendship.status !== "accepted") {
+              founduser.friends.friendship.status = "accepted";
+              friendship.date = Date.now;
+              res.json(req.user);
+            } else {
+              errors.alreadyFriends = "You're already friends with that user.";
+              res.status(400).json(errors);
+            }
+          }
+        });
+
         // User found
         // Creating new request
-        user.friends.push({ status: "pending", friend: req.user._id });
-        user.save();
-        req.user.friends.push({ status: "requested", friend: user._id });
+        founduser.friends.push({ status: "pending", friend: req.user._id });
+        founduser.save();
+        req.user.friends.push({ status: "requested", friend: founduser._id });
         req.user.save().then(response => res.json(response));
       })
       .catch(() => {
-        errors.noprofile = "Sorry, that username does not exist!2";
+        errors.noprofile = "Sorry, that username does not exist!";
         res.status(404).json(errors);
       });
   }
