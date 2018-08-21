@@ -1,16 +1,53 @@
 /* Generic board style */
-
+.Board {
+  display: grid;
+}
 .Board__style {
   display: flex;
   justify-content: center;
   margin-top: 100px;
   height: 250px;
 }
-.Board__tile {
+.Board__tile__across {
   border: 1px solid black;
   width: 75px;
   height: 100px;
 }
+.Board__tile__side {
+  border: 1px solid black;
+  width: 100px;
+  height: 75px;
+}
 .Corner__tile {
   width: 100px;
+}
+.Grid__container {
+  display: grid;
+  justify-content: space-around;
+  grid-template-columns: 218.75px 218.75px 218.75px;
+  grid-template-rows: 100px 337.5px 337.5px 100px;
+  grid-template-areas:
+    "t t t t"
+    "l e e r"
+    "l e e r"
+    "b b b b";
+}
+
+/* Board top */
+.Board__top {
+  grid-area: t;
+}
+/* Board left  */
+.Board__left {
+  grid-area: l;
+}
+
+/* Board right */
+.Board__right {
+  grid-area: r;
+}
+
+/* Board bottom */
+.Board__bottom {
+  grid-area: b;
 }
