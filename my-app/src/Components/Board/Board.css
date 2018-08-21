@@ -1,0 +1,16 @@
+/* Generic board style */
+
+.Board__style {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+  height: 250px;
+}
+.Board__tile {
+  border: 1px solid black;
+  width: 75px;
+  height: 100px;
+}
+.Corner__tile {
+  width: 100px;
+}
