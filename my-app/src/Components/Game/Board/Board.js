@@ -1,75 +1,43 @@
 import React, { Component } from "react";
 import "./Board.css";
+import classnames from "classnames";
 
 import Tile from "./Tile/Tile";
-import { GenerateTileContent } from "../TileContents";
 
 export default class Board extends Component {
   constructor(props) {
     super(props);
 
-    this.setState = {
-      tileContents: []
-    };
+    this.setState = {};
   }
 
   render() {
     console.log("BOARD PROPS", this.props);
-    console.log(this.state);
+    console.log("BOARD STATE", this.state);
+    let tileClasses = classnames;
+
     return (
       <div className="Board">
         <div className="Grid__container">
-          <div className="Board__top Board__style">
-            <div className="Board__tile__across Corner__tile">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-          </div>
-
-          <div className="Board__left">
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__across Corner__tile">test</div>
-          </div>
-
-          <div className="Board__right">
-            <div className="Board__tile__across Corner__tile">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-            <div className="Board__tile__side">test</div>
-          </div>
-
-          <div className="Board__bottom Board__style">
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across Corner__tile">test</div>
-          </div>
+          {this.props.tileContent.map((content, index) => {
+            console.log(index);
+            return (
+              <div
+                className={classnames({
+                  tile: true,
+                  corner: content.id % 10 === 0,
+                  top: 0 < content.id && content.id < 10,
+                  right: 10 < content.id && content.id < 20,
+                  bottom: 20 < content.id && content.id < 30,
+                  left: 30 < content.id && content.id < 40
+                })}
+                key={index}
+              >
+                {content.name}
+              </div>
+            );
+          })}
+          <div className="middle">Hello</div>
         </div>
       </div>
     );
