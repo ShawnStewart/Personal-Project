@@ -1,53 +1,69 @@
 /* Generic board style */
+* {
+}
 .Board {
+  box-sizing: border-box;
   display: grid;
 }
 .Board__style {
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
-  margin-top: 100px;
   height: 250px;
 }
+
 .Board__tile__across {
+  box-sizing: border-box;
   border: 1px solid black;
   width: 75px;
   height: 100px;
 }
 .Board__tile__side {
+  box-sizing: border-box;
   border: 1px solid black;
   width: 100px;
   height: 75px;
 }
 .Corner__tile {
+  box-sizing: border-box;
+  border: none;
   width: 100px;
 }
 .Grid__container {
+  box-sizing: border-box;
+  border: 1px solid black;
   display: grid;
+  margin: auto;
   justify-content: space-around;
-  grid-template-columns: 218.75px 218.75px 218.75px;
-  grid-template-rows: 100px 337.5px 337.5px 100px;
+  width: 875px;
+  height: 875px;
+  grid-template-columns: 100px 675px 100px;
+  grid-template-rows: 100px 675px 100px;
   grid-template-areas:
-    "t t t t"
-    "l e e r"
-    "l e e r"
-    "b b b b";
+    "t t r"
+    "l e r"
+    "l b b";
 }
 
 /* Board top */
 .Board__top {
+  box-sizing: border-box;
   grid-area: t;
 }
 /* Board left  */
 .Board__left {
+  box-sizing: border-box;
   grid-area: l;
 }
 
 /* Board right */
 .Board__right {
+  box-sizing: border-box;
   grid-area: r;
 }
 
 /* Board bottom */
 .Board__bottom {
+  box-sizing: border-box;
   grid-area: b;
 }

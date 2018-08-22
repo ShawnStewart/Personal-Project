@@ -7,12 +7,19 @@ export default class BoardTop extends Component {
 
     this.setState = {};
   }
+
+  // Generate board
+
+  GenerateBoard = () => {
+    // Top
+    //
+  };
+
   render() {
     return (
       <div className="Board">
         <div className="Grid__container">
           <div className="Board__top Board__style">
-            <div className="Board__tile__across Corner__tile">test</div>
             <div className="Board__tile__across">test</div>
             <div className="Board__tile__across">test</div>
             <div className="Board__tile__across">test</div>
@@ -22,7 +29,6 @@ export default class BoardTop extends Component {
             <div className="Board__tile__across">test</div>
             <div className="Board__tile__across">test</div>
             <div className="Board__tile__across">test</div>
-            <div className="Board__tile__across Corner__tile">test</div>
           </div>
 
           <div className="Board__left">
@@ -35,10 +41,11 @@ export default class BoardTop extends Component {
             <div className="Board__tile__side">test</div>
             <div className="Board__tile__side">test</div>
             <div className="Board__tile__side">test</div>
+            <div className="Board__tile__across Corner__tile">test</div>
           </div>
 
           <div className="Board__right">
-            <div className="Board__tile__side Corner__tile">test</div>
+            <div className="Board__tile__across Corner__tile">test</div>
             <div className="Board__tile__side">test</div>
             <div className="Board__tile__side">test</div>
             <div className="Board__tile__side">test</div>
@@ -51,7 +58,6 @@ export default class BoardTop extends Component {
           </div>
 
           <div className="Board__bottom Board__style">
-            <div className="Board__tile__across Corner__tile">test</div>
             <div className="Board__tile__across">test</div>
             <div className="Board__tile__across">test</div>
             <div className="Board__tile__across">test</div>
