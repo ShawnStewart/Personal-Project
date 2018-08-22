@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import "semantic-ui-css/semantic.min.css";
 import "./App.css";
-import BoardTop from "./Components/Board/Board";
+import Game from "./Components/Game/Game";
 
-import Nav from "./Components/Nav";
+import Nav from "./Components/Nav/Nav";
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <Nav />
-        <BoardTop />
+        <Game />
       </div>
     );
   }
