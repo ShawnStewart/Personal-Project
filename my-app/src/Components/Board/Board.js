@@ -10,16 +10,12 @@ export default class BoardTop extends Component {
 
   // Generate board
 
-  GenerateBoard = () => {
-    // Top
-    //
-  };
-
   render() {
     return (
       <div className="Board">
         <div className="Grid__container">
           <div className="Board__top Board__style">
+            <div className="Board__tile__across Corner__tile">test</div>
             <div className="Board__tile__across">test</div>
             <div className="Board__tile__across">test</div>
             <div className="Board__tile__across">test</div>
